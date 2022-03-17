@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\Aparat\AparatHandler;
 use Illuminate\Http\Request;
 
-class ApratController extends Controller
+class AparatController extends Controller
 {
     private AparatHandler $aparat;
     public function __construct(AparatHandler $aparat)
@@ -15,7 +15,8 @@ class ApratController extends Controller
 
     public function index()
     {
-      $videos = $this->aparat->mostViewedVideos();
+     $videos = $this->aparat->mostViewedVideos();
+
     }
 
 }
