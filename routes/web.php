@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[AparatController::class,'index']);
+Route::get('/login',[AparatController::class,'login']);

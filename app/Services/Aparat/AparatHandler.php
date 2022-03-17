@@ -18,4 +18,19 @@ class AparatHandler
         $response = $this->http::get($url);
         return $response->json('mostviewedvideos');
     }
+
+    public function login()
+    {
+        $password = sha1(md5('aparatpass'));
+        $user = 'aparatusername';
+        $url = 'https://www.aparat.com/etc/api/login/luser/{user}/lpass/{password}';
+
+        $url = str_replace('{user}',$user, $url);
+        $url = str_replace('{password}',$password,$url);
+
+        $response = $this->http::get($url);
+
+        return $response->json('login');
+
+    }
 }

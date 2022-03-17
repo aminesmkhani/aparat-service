@@ -19,4 +19,13 @@ class AparatController extends Controller
      return view('videos',compact('videos'));
     }
 
+    public function login()
+    {
+        $response = $this->aparat->login();
+
+        return response()->json([
+            'data' => $response
+        ]);
+    }
+
 }
