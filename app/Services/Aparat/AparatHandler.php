@@ -16,6 +16,6 @@ class AparatHandler
     {
         $url = 'https://www.aparat.com/etc/api/mostviewedvideos';
         $response = $this->http::get($url);
-        dd($response->json());
+        return $response->json('mostviewedvideos');
     }
 }

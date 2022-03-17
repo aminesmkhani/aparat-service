@@ -16,7 +16,7 @@ class AparatController extends Controller
     public function index()
     {
      $videos = $this->aparat->mostViewedVideos();
-
+     return view('videos',compact('videos'));
     }
 
 }
