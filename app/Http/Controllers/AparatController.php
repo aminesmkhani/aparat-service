@@ -28,4 +28,9 @@ class AparatController extends Controller
         ]);
     }
 
+    public function upload()
+    {
+        $this->aparat->upload();
+    }
+
 }
