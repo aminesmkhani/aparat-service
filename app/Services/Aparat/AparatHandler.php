@@ -14,16 +14,16 @@ class AparatHandler
 
     public function mostViewedVideos()
     {
-        $url = 'https://www.aparat.com/etc/api/mostviewedvideos';
+        $url = config('aparat.mostViewedVideosUrl');
         $response = $this->http::get($url);
         return $response->json('mostviewedvideos');
     }
 
     public function login()
     {
-        $password = sha1(md5('aparatpass'));
-        $user = 'aparatusername';
-        $url = 'https://www.aparat.com/etc/api/login/luser/{user}/lpass/{password}';
+        $password = config('aparat.password');
+        $user = config('aparat.user');
+        $url = config('aparat.loginUrl');
 
         $url = str_replace('{user}',$user, $url);
         $url = str_replace('{password}',$password,$url);
