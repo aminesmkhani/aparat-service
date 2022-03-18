@@ -5,15 +5,18 @@ namespace App\Services\Aparat;
 use App\Exceptions\CannotGetTokenException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class AparatHandler
 {
     private Http $http;
+    private $user;
     const TOKEN_EXPIRE_TIME = 1200;
 
     public function __construct(Http $http)
     {
         $this->http = $http;
+        $this->user = config('aparat.user');
     }
 
     public function mostViewedVideos()
@@ -26,9 +29,8 @@ class AparatHandler
     public function login()
     {
         $password = config('aparat.password');
-        $user = config('aparat.user');
         $url = config('aparat.loginUrl');
-        $url = str_replace('{user}',$user, $url);
+        $url = str_replace('{user}',$this->user, $url);
         $url = str_replace('{password}',$password,$url);
 
         $response = $this->http::get($url);
@@ -38,8 +40,34 @@ class AparatHandler
     public function upload()
     {
         $url = config('aparat.formUploadUrl');
+       $token = $this->getToken();
+       $url = str_replace('{user}',$this->user,$url);
+       $url = str_replace('{token}',$token,$url);
 
-        dd($this->getToken());
+       $response = $this->http::get($url);
+
+       $formAction = $response->json('uploadform.formAction');
+       $formId = $response->json('uploadform.frm-id');
+
+
+       $uploadResponse = $this->http::attach(
+           'video', file_get_contents(Storage::disk('public')->path('amin.mp4')), 'amin.mp4'
+       )->post($formAction,[
+           [
+               'name' => 'frm-id',
+               'contents' => $formId
+           ],
+           [
+               'name'   => 'data[title]',
+               'contents'  => 'Aparat Api',
+           ],
+           [
+               'name'   => 'data[category]',
+               'contents' => 10
+           ]
+       ]);
+
+      return $uploadResponse->json('uploadpost');
     }
 
 

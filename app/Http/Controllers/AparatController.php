@@ -30,7 +30,10 @@ class AparatController extends Controller
 
     public function upload()
     {
-        $this->aparat->upload();
+       $response =  $this->aparat->upload();
+       return response()->json([
+          'data'  => $response
+       ]);
     }
 
 }
