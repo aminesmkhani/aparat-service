@@ -39,12 +39,7 @@ class AparatHandler
 
     public function upload()
     {
-        $url = config('aparat.formUploadUrl');
-       $token = $this->getToken();
-       $url = str_replace('{user}',$this->user,$url);
-       $url = str_replace('{token}',$token,$url);
-
-       $response = $this->http::get($url);
+        $this->getUploadForm();
 
        $formAction = $response->json('uploadform.formAction');
        $formId = $response->json('uploadform.frm-id');
@@ -81,6 +76,24 @@ class AparatHandler
 
             throw new CannotGetTokenException;
         });
+
+    }
+
+
+    private function getUploadForm()
+    {
+        $url = config('aparat.formUploadUrl');
+        $token = $this->getToken();
+        $url = str_replace('{user}',$this->user,$url);
+        $url = str_replace('{token}',$token,$url);
+
+        $response = $this->http::get($url);
+
+//        if (is_null($response->json('uploadform.formAction'))){
+//
+//        }
+
+        return $response->json('uploadform')
 
     }
 }
