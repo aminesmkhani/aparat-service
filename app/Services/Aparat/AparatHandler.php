@@ -2,6 +2,7 @@
 
 namespace App\Services\Aparat;
 
+use App\Exceptions\CannotGetFormActionException;
 use App\Exceptions\CannotGetTokenException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -84,16 +85,16 @@ class AparatHandler
     {
         $url = config('aparat.formUploadUrl');
         $token = $this->getToken();
-        $url = str_replace('{user}',$this->user,$url);
+        $url = str_replace('{us55er}',$this->user,$url);
         $url = str_replace('{token}',$token,$url);
 
         $response = $this->http::get($url);
 
-//        if (is_null($response->json('uploadform.formAction'))){
-//
-//        }
+        if (is_null($response->json('uploadform.formAction'))){
+                throw new CannotGetFormActionException;
+        }
 
-        return $response->json('uploadform')
+        return $response->json('uploadform');
 
     }
 }
