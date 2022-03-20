@@ -30,10 +30,17 @@ class AparatController extends Controller
 
     public function upload(Request $request)
     {
-       $response =  $this->aparat->upload($request->filename,$request->title,$request->category);
-       return response()->json([
-          'data'  => $response
-       ]);
+        try {
+            $response =  $this->aparat->upload($request->filename,$request->title,$request->category);
+            return response()->json([
+                'data'  => $response
+            ]);
+        }catch (\Exception $e){
+            return response()->json([
+                'error' => 'oops! Error!'
+            ]);
+        }
+
     }
 
 }
