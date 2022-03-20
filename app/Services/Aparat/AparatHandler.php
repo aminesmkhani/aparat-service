@@ -38,7 +38,7 @@ class AparatHandler
         return $response->json('login');
     }
 
-    public function upload()
+    public function upload(string $filename, string $title, int $category)
     {
       $formAction = $this->getUploadForm();
 
@@ -47,7 +47,7 @@ class AparatHandler
 
 
        $uploadResponse = $this->http::attach(
-           'video', file_get_contents(Storage::disk('public')->path('amin.mp4')), 'amin.mp4'
+           'video', file_get_contents(Storage::disk('public')->path($filename)), $filename
        )->post($formActionUrl,[
            [
                'name' => 'frm-id',
@@ -55,11 +55,11 @@ class AparatHandler
            ],
            [
                'name'   => 'data[title]',
-               'contents'  => 'Aparat Api',
+               'contents'  => $title,
            ],
            [
                'name'   => 'data[category]',
-               'contents' => 10
+               'contents' => $category
            ]
        ]);
 
