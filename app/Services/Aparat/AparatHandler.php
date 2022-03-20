@@ -40,15 +40,15 @@ class AparatHandler
 
     public function upload()
     {
-        $this->getUploadForm();
+      $formAction = $this->getUploadForm();
 
-       $formAction = $response->json('uploadform.formAction');
-       $formId = $response->json('uploadform.frm-id');
+       $formActionUrl = $formAction['formAction'];
+       $formId = $formAction['frm-id'];
 
 
        $uploadResponse = $this->http::attach(
            'video', file_get_contents(Storage::disk('public')->path('amin.mp4')), 'amin.mp4'
-       )->post($formAction,[
+       )->post($formActionUrl,[
            [
                'name' => 'frm-id',
                'contents' => $formId
@@ -85,7 +85,7 @@ class AparatHandler
     {
         $url = config('aparat.formUploadUrl');
         $token = $this->getToken();
-        $url = str_replace('{us55er}',$this->user,$url);
+        $url = str_replace('{user}',$this->user,$url);
         $url = str_replace('{token}',$token,$url);
 
         $response = $this->http::get($url);
