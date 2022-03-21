@@ -32,9 +32,11 @@ class AparatHandler
     {
         $password = config('aparat.password');
         $url = config('aparat.loginUrl');
-        $url = str_replace('{user}',$this->user, $url);
-        $url = str_replace('{password}',$password,$url);
 
+        $url = $this->replaceParams($url,[
+            'user' => $this->user,
+            'password'  => $password
+        ]);
         $response = $this->http::get($url);
         return $response->json('login');
     }
@@ -70,10 +72,11 @@ class AparatHandler
     public function delete(string $uid)
     {
         $url = config('aparat.deleteVideoUrl');
-        $url = str_replace('{uid}',$uid,$url);
-        $url = str_replace('{user}',$this->user,$url);
-        $url = str_replace('{token}',$this->getToken(),$url);
-
+        $url = $this->replaceParams($url,[
+           'uid' => $uid,
+            'user' => $this->user,
+            'token' => $this->getToken()
+        ]);
         $response = $this->http::get($url);
         $deleteVideoLink = $response->json('deletevideolink.deleteurl');
 
@@ -83,15 +86,13 @@ class AparatHandler
 
     }
 
-
-    /**
-     * @throws VideoNotFoundException
-     */
     public function show(string $uid)
     {
         $url = config('aparat.showVideoUrl');
-        $url = str_replace('{uid}',$uid,$url);
 
+        $url = $this->replaceParams($url,[
+           'uid' => $uid
+        ]);
         $response = $this->http::get($url);
 
        if (is_null($response->json('video.id'))){
@@ -117,18 +118,26 @@ class AparatHandler
     private function getUploadForm()
     {
         $url = config('aparat.formUploadUrl');
-        $token = $this->getToken();
-        $url = str_replace('{user}',$this->user,$url);
-        $url = str_replace('{token}',$token,$url);
-
+        $url = $this->replaceParams($url, [
+            'user' => $this->user,
+            'token' => $this->getToken()
+        ]);
         $response = $this->http::get($url);
-
         if (is_null($response->json('uploadform.formAction'))){
                 throw new CannotGetFormActionException;
         }
 
         return $response->json('uploadform');
 
+    }
+
+    private function replaceParams($url, $options = [])
+    {
+        foreach ($options as $key => $value){
+            $url = str_replace("{{$key}}",$value,$url);
+        }
+
+        return $url;
     }
 
 }
