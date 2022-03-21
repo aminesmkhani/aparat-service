@@ -97,4 +97,10 @@ class AparatHandler
         return $response->json('uploadform');
 
     }
+
+
+    public function delete(int $uid)
+    {
+
+    }
 }

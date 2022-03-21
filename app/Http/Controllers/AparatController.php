@@ -43,4 +43,14 @@ class AparatController extends Controller
 
     }
 
+
+    public function delete(Request $request)
+    {
+        $response = $this->aparat->delete($request->uid);
+
+        return response()->json([
+           'data'   => $response
+        ]);
+    }
+
 }
