@@ -82,6 +82,15 @@ class AparatHandler
 
     }
 
+
+    public function show(string $uid)
+    {
+        $url = config('aparat.showVideoUrl');
+        $url = str_replace('{uid}',$uid,$url);
+
+
+    }
+
     private function getToken()
     {
        return Cache::remember('aparat_token',self::TOKEN_EXPIRE_TIME,function (){
