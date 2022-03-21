@@ -68,6 +68,17 @@ class AparatHandler
 
     public function delete(string $uid)
     {
+        $url = config('aparat.deleteVideoUrl');
+        $url = str_replace('{uid}',$uid,$url);
+        $url = str_replace('{user}',$this->user,$url);
+        $url = str_replace('{token}',$this->getToken(),$url);
+
+        $response = $this->http::get($url);
+        $deleteVideoLink = $response->json('deletevideolink.deleteurl');
+
+        $deleteResponse = $this->http::get($deleteVideoLink);
+
+        return $deleteResponse->json('deletevideo');
 
     }
 
