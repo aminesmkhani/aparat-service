@@ -18,3 +18,4 @@ Route::get('/',[AparatController::class,'index']);
 Route::get('/login',[AparatController::class,'login']);
 Route::post('/upload',[AparatController::class,'upload']);
 Route::get('/delete',[AparatController::class,'delete']);
+Route::get('/show',[AparatController::class,'show']);

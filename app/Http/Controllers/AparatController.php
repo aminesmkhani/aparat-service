@@ -53,4 +53,14 @@ class AparatController extends Controller
         ]);
     }
 
+
+    public function show(Request $request)
+    {
+        $response = $this->aparat->show($request->uid);
+
+        return response()->json([
+           'data'   => $response
+        ]);
+    }
+
 }

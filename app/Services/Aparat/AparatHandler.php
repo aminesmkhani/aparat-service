@@ -4,6 +4,7 @@ namespace App\Services\Aparat;
 
 use App\Exceptions\CannotGetFormActionException;
 use App\Exceptions\CannotGetTokenException;
+use App\Exceptions\VideoNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -83,11 +84,19 @@ class AparatHandler
     }
 
 
+    /**
+     * @throws VideoNotFoundException
+     */
     public function show(string $uid)
     {
         $url = config('aparat.showVideoUrl');
         $url = str_replace('{uid}',$uid,$url);
 
+        $response = $this->http::get($url);
+
+       if (is_null($response->json('video.id'))){
+            throw new VideoNotFoundException;
+       }
 
     }
 
