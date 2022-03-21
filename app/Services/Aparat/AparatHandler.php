@@ -66,6 +66,10 @@ class AparatHandler
       return $uploadResponse->json('uploadpost');
     }
 
+    public function delete(string $uid)
+    {
+
+    }
 
     private function getToken()
     {
@@ -79,8 +83,6 @@ class AparatHandler
         });
 
     }
-
-
     private function getUploadForm()
     {
         $url = config('aparat.formUploadUrl');
@@ -98,9 +100,4 @@ class AparatHandler
 
     }
 
-
-    public function delete(int $uid)
-    {
-
-    }
 }
