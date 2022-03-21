@@ -98,6 +98,8 @@ class AparatHandler
             throw new VideoNotFoundException;
        }
 
+       return $response->json('video');
+
     }
 
     private function getToken()

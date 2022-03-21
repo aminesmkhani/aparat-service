@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\VideoNotFoundException;
 use App\Services\Aparat\AparatHandler;
 use Illuminate\Http\Request;
 
@@ -56,11 +57,18 @@ class AparatController extends Controller
 
     public function show(Request $request)
     {
-        $response = $this->aparat->show($request->uid);
+        try {
+            $response = $this->aparat->show($request->uid);
 
-        return response()->json([
-           'data'   => $response
-        ]);
+            return response()->json([
+                'data'   => $response
+            ]);
+        }catch (VideoNotFoundException $e){
+            return response()->json([
+                'error'   => $e->getMessage()
+            ]);
+        }
+
     }
 
 }
